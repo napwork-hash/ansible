@@ -1,6 +1,6 @@
 - name: Belajar Variables
   hosts: managed_nodes
-  become: true
+  become: false
   tasks:
     - name: Cek disk usage
       command: df -h /
