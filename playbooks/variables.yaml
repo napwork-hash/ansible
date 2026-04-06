@@ -1,0 +1,11 @@
+- name: Belajar Variables
+  hosts: managed_nodes
+  become: true
+    - name: Cek disk usage
+      command: df -h /
+      register: disk_info
+      changed_when: false
+
+    - name: Tampilkan disk usage
+      debug:
+        msg: "{{ disk_info.stdout_lines }}"
