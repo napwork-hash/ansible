@@ -1,3 +1,4 @@
+ansible_user: nlab-3
 ansible_become: true
 ansible_become_method: sudo
 ansible_become_password: !vault |
