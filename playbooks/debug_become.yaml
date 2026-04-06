@@ -1,0 +1,11 @@
+- name: Debug become
+  hosts: managed_nodes
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Show ansible_become_pass
+      debug:
+        msg:
+          - "become_pass defined: {{ ansible_become_pass is defined }}"
+          - "become_pass type: {{ ansible_become_pass | type_debug }}"
+          - "become_pass value: {{ ansible_become_pass }}"

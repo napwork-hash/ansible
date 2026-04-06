@@ -1,18 +1,16 @@
 - name: Install package dengan sudo
   hosts: managed_nodes
-
+  become: true
   tasks:
     - name: Install htop
       apt:
         name: htop
         state: present
         update_cache: yes
-
     - name: Cek htop terinstall
       command: which htop
       register: htop_check
       changed_when: false
-
     - name: Tampilkan hasil
       debug:
         msg: "{{ htop_check.stdout }}"
