@@ -1,4 +1,3 @@
-Tentu, ini adalah versi Markdown yang telah saya rapikan strukturnya. Saya menggunakan teknik *visual hierarchy* agar informasi teknis yang padat ini lebih mudah dipindai (scannable) dan dipahami tanpa mengubah konten aslinya.
 
 ---
 
