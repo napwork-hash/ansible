@@ -1,0 +1,10 @@
+- name: Bootstrap Ansible sudoers
+  hosts: managed_nodes
+  become: true
+  tasks:
+    - name: Drop nopty sudoers rule
+      copy:
+        dest: /etc/sudoers.d/ansible-nopty
+        content: "Defaults:{{ ansible_user }} !use_pty\n"
+        mode: "0440"
+        validate: "visudo -c -f %s"

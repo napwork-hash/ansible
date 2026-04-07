@@ -1,0 +1,17 @@
+all:
+  children:
+    managed_nodes:
+      children:
+        group_1:
+          hosts:
+            nlab-1:
+              ansible_host: 192.168.1.101
+              ansible_user: nlab-1
+            nlab-3:
+              ansible_host: 192.168.1.103
+              ansible_user: nlab-3
+        group_2:
+          hosts:
+            nlab-4:
+              ansible_host: 192.168.1.104
+              ansible_user: nlab-4
