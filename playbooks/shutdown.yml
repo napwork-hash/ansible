@@ -1,0 +1,10 @@
+- name: Shutdown Managed Nodes
+  hosts: managed_nodes
+  become: true
+  tasks:
+    - name: Shutdown the system
+      systemd:
+        name: poweroff
+        state: powered-off
+      
+      
