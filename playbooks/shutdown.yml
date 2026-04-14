@@ -3,8 +3,6 @@
   become: true
   tasks:
     - name: Shutdown the system
-      systemd:
-        name: poweroff
-        state: powered-off
+      shell: "sleep 2 && /sbin/shutdown -h now"
       
       
