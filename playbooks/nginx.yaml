@@ -4,6 +4,20 @@
   become: true
 
   tasks:
+    - name: Matikan unattended-upgrades sementara
+      systemd:
+        name: unattended-upgrades
+        state: stopped
+      failed_when: false   # ← tidak error kalau service tidak ada
+
+    - name: Tunggu apt lock bebas
+      shell: |
+        while fuser /var/lib/dpkg/lock-frontend /var/lib/apt/lists/lock /var/cache/apt/archives/lock >/dev/null 2>&1; do
+          echo "Menunggu apt lock..."
+          sleep 3
+        done
+      changed_when: false
+
     - name: Update apt cache
       apt:
         update_cache: true
@@ -13,6 +27,12 @@
       apt:
         name: nginx
         state: present
+
+    - name: Nyalakan kembali unattended-upgrades
+      systemd:
+        name: unattended-upgrades
+        state: started
+      failed_when: false
 
     - name: Pastikan nginx running dan enable autostart
       systemd:
@@ -27,4 +47,4 @@
 
     - name: Tampilkan versi nginx
       debug:
-        msg: "{{ nginx_version.stderr }}"  # nginx -v output ke stderr
+        msg: "{{ nginx_version.stderr }}"
