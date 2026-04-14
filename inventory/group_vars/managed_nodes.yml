@@ -1,0 +1,5 @@
+# Variabel global untuk semua managed nodes
+timezone: Asia/Jakarta
+nvm_version: "0.40.2"
+node_version: "24"
+nvm_install_user: "{{ ansible_user }}"

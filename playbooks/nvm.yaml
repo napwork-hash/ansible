@@ -1,0 +1,63 @@
+---
+- name: Install NVM dan Node.js
+  hosts: managed_nodes
+  become: false  # NVM install per-user, bukan root
+
+  tasks:
+    - name: Install dependencies NVM
+      apt:
+        name:
+          - curl
+          - build-essential
+        state: present
+        update_cache: true
+      become: true
+
+    - name: Cek apakah NVM sudah terinstall
+      stat:
+        path: "/home/{{ nvm_install_user }}/.nvm/nvm.sh"
+      register: nvm_installed
+
+    - name: Download dan install NVM
+      shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash
+      args:
+        executable: /bin/bash
+      when: not nvm_installed.stat.exists
+
+    - name: Install Node.js via NVM
+      shell: |
+        export NVM_DIR="$HOME/.nvm"
+        source "$NVM_DIR/nvm.sh"
+        nvm install {{ node_version }}
+        nvm alias default {{ node_version }}
+      args:
+        executable: /bin/bash
+      register: node_install
+      changed_when: "'already installed' not in node_install.stdout"
+
+    - name: Cek versi Node.js
+      shell: |
+        export NVM_DIR="$HOME/.nvm"
+        source "$NVM_DIR/nvm.sh"
+        node --version
+      args:
+        executable: /bin/bash
+      register: node_version_check
+      changed_when: false
+
+    - name: Cek versi npm
+      shell: |
+        export NVM_DIR="$HOME/.nvm"
+        source "$NVM_DIR/nvm.sh"
+        npm --version
+      args:
+        executable: /bin/bash
+      register: npm_version_check
+      changed_when: false
+
+    - name: Tampilkan hasil instalasi
+      debug:
+        msg:
+          - "Node.js : {{ node_version_check.stdout }}"
+          - "npm     : {{ npm_version_check.stdout }}"

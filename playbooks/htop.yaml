@@ -1,4 +1,5 @@
-- name: Install package dengan sudo
+---
+- name: Install HTOP on Managed Nodes
   hosts: managed_nodes
   become: true
   tasks:

@@ -1,0 +1,16 @@
+---
+# Master playbook — jalankan semua setup sekaligus
+# Usage: ansible-playbook playbooks/site.yaml
+# Partial: ansible-playbook playbooks/site.yaml --tags timezone,nginx
+
+- name: "[1/3] Set Timezone"
+  import_playbook: timezone.yaml
+  tags: timezone
+
+- name: "[2/3] Install Nginx"
+  import_playbook: nginx.yaml
+  tags: nginx
+
+- name: "[3/3] Install NVM & Node.js"
+  import_playbook: nvm.yaml
+  tags: nvm

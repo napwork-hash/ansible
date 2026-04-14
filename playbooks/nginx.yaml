@@ -1,0 +1,30 @@
+---
+- name: Install dan Start Nginx
+  hosts: managed_nodes
+  become: true
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Pastikan nginx running dan enable autostart
+      systemd:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Cek versi nginx
+      command: nginx -v
+      register: nginx_version
+      changed_when: false
+
+    - name: Tampilkan versi nginx
+      debug:
+        msg: "{{ nginx_version.stderr }}"  # nginx -v output ke stderr
